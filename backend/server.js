@@ -32,8 +32,8 @@ const PORT = parseInt(process.env.PORT) || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/foodie_app';
 
 // Start listening
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`🚀 Server running on http://127.0.0.1:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });
 
 console.log('Connecting to MongoDB...');
