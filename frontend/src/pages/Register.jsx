@@ -82,20 +82,20 @@ export function Register() {
                                 onClick={() => setRole('user')}
                                 className={`flex-1 flex items-center justify-center gap-3 py-5 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] transition-all ${role === 'user' ? 'bg-white text-rose-600 shadow-2xl scale-[1.02] ring-1 ring-gray-100' : 'text-gray-300'}`}
                             >
-                                <Utensils className="h-4 w-4" /> Patron
+                                <Utensils className="h-4 w-4" /> customer
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setRole('admin')}
                                 className={`flex-1 flex items-center justify-center gap-3 py-5 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] transition-all ${role === 'admin' ? 'bg-white text-rose-600 shadow-2xl scale-[1.02] ring-1 ring-gray-100' : 'text-gray-300'}`}
                             >
-                                <Store className="h-4 w-4" /> Proprietor
+                                <Store className="h-4 w-4" /> Admin
                             </button>
                         </div>
 
                         <div className="space-y-6">
                             <div className="group">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Designation</label>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Name</label>
                                 <div className="relative">
                                     <User className="absolute left-8 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-rose-600" />
                                     <input
@@ -110,7 +110,7 @@ export function Register() {
                             </div>
 
                             <div className="group">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Identification</label>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Email</label>
                                 <div className="relative">
                                     <Mail className="absolute left-8 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-rose-600" />
                                     <input
@@ -125,7 +125,7 @@ export function Register() {
                             </div>
 
                             <div className="group">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Security Key</label>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-3 ml-3 italic">Password</label>
                                 <div className="relative">
                                     <Lock className="absolute left-8 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-rose-600" />
                                     <input
