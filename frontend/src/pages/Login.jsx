@@ -80,7 +80,7 @@ export function Login() {
 
                     <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
                         <div className="group">
-                            <label className="block text-[11px] font-black uppercase tracking-[0.6em] text-gray-400 mb-5 ml-4 italic">Identification</label>
+                            <label className="block text-[11px] font-black uppercase tracking-[0.6em] text-gray-400 mb-5 ml-4 italic">User Name</label>
                             <div className="relative">
                                 <Mail className="absolute left-10 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-300 transition-all group-focus-within:text-rose-600 group-focus-within:scale-110" />
                                 <input
@@ -95,7 +95,7 @@ export function Login() {
                         </div>
 
                         <div className="group">
-                            <label className="block text-[11px] font-black uppercase tracking-[0.6em] text-gray-400 mb-5 ml-4 italic">Security Key</label>
+                            <label className="block text-[11px] font-black uppercase tracking-[0.6em] text-gray-400 mb-5 ml-4 italic">Password</label>
                             <div className="relative">
                                 <Lock className="absolute left-10 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-300 transition-all group-focus-within:text-rose-600 group-focus-within:scale-110" />
                                 <input
