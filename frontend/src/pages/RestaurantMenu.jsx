@@ -100,7 +100,7 @@ export function RestaurantMenu() {
 
                     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-16">
                         <div className="max-w-4xl">
-                            <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase italic leading-[0.85] mb-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">{restaurant.name}</h1>
+                            <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter uppercase italic leading-[0.95] mb-10 drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">{restaurant.name}</h1>
                             <div className="flex flex-wrap items-center gap-x-16 gap-y-8">
                                 <div className="flex items-center gap-4 text-rose-400 font-black text-sm uppercase italic tracking-[0.3em]">
                                     <Tag className="h-6 w-6" /> {restaurant.category || 'Fine Dining'}
@@ -129,7 +129,7 @@ export function RestaurantMenu() {
                 <div className="flex items-center gap-10 mb-20">
                     <div className="flex flex-col">
                         <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.5em] italic mb-2">Today's Selections</span>
-                        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter flex items-center gap-6 italic leading-none">
+                        <h2 className="text-4xl font-black text-gray-900 uppercase tracking-tighter flex items-center gap-6 italic leading-tight">
                             <Utensils className="h-10 w-10 text-rose-600" /> Culinary <span className="text-rose-600">Assets.</span>
                         </h2>
                     </div>
@@ -142,7 +142,7 @@ export function RestaurantMenu() {
                         const inCart = !!cartItem;
 
                         return (
-                            <div key={food._id} className="group bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden flex flex-col relative hover:shadow-2xl hover:shadow-black/[0.03] transition-all duration-700 shadow-sm">
+                            <div key={food._id} className="group bg-white rounded-[4rem] overflow-hidden shadow-sm border border-gray-100 hover:shadow-2xl hover:shadow-black/[0.03] transition-all duration-700 flex flex-col min-h-0">
                                 <div className="h-60 relative overflow-hidden">
                                     <ImageWithFallback
                                         src={food.image}

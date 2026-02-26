@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 // Public Pages
 import { Home } from './pages/Home';
@@ -27,6 +28,7 @@ export function App() {
         <AuthProvider>
             <CartProvider>
                 <Router>
+                    <ScrollToTop />
                     <div className="min-h-screen bg-white flex flex-col font-sans selection:bg-rose-100 selection:text-rose-900">
                         <Navbar />
                         <main className="flex-grow">

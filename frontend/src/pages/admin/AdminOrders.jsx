@@ -131,7 +131,7 @@ export function AdminOrders() {
                                                 <span className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Operational Ticket</span>
                                                 <code className="text-[11px] font-black text-rose-600 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-100/50">#{order._id.slice(-6).toUpperCase()}</code>
                                             </div>
-                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">{order.userId?.name || 'Authorized Guest'}</h3>
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 uppercase tracking-tighter italic leading-tight">{order.userId?.name || 'Authorized Guest'}</h3>
                                         </div>
                                     </div>
 
@@ -157,7 +157,7 @@ export function AdminOrders() {
                                         </div>
                                         <button
                                             onClick={() => setExpandedOrder(expandedOrder === order._id ? null : order._id)}
-                                            className={`p-5 rounded-2xl transition-all duration-700 shadow-xl ${expandedOrder === order._id ? 'bg-[#131517] text-white rotate-180 border border-white/10 shadow-black/20' : 'bg-gray-50 text-gray-400 hover:bg-rose-600 hover:text-white transform hover:scale-110'}`}
+                                            className={`p-5 rounded-2xl transition-all duration-700 shadow-xl ${expandedOrder === order._id ? 'bg-rose-600 text-white rotate-180 shadow-rose-900/20' : 'bg-gray-50 text-gray-400 hover:bg-rose-600 hover:text-white transform hover:scale-110'}`}
                                         >
                                             <Eye className={`h-6 w-6`} />
                                         </button>

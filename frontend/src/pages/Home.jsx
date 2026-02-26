@@ -80,7 +80,7 @@ export function Home() {
                             <span className="text-[11px] font-black text-rose-600 uppercase tracking-widest italic">The Future of Flavor</span>
                         </div>
 
-                        <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-8 tracking-tighter uppercase italic leading-[0.9]">
+                        <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-8 tracking-tighter uppercase italic leading-tight">
                             Elite Taste. <br /> <span className="text-rose-600">Zero Effort.</span>
                         </h1>
 
@@ -148,7 +148,7 @@ export function Home() {
                     <div className="flex items-center gap-8 mb-16">
                         <div className="flex flex-col text-left">
                             <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] italic mb-2">Prime Portfolio</span>
-                            <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">Curated <span className="text-rose-600">Brands.</span></h2>
+                            <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-tight">Curated <span className="text-rose-600">Brands.</span></h2>
                         </div>
                         <div className="flex-1 h-px bg-gray-100" />
                     </div>
@@ -211,7 +211,7 @@ export function Home() {
                     <div className="flex items-center gap-8 mb-16">
                         <div className="flex flex-col text-left">
                             <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] italic mb-2">Signature Assets</span>
-                            <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">Elite <span className="text-rose-600">Menu.</span></h2>
+                            <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase italic leading-tight">Elite <span className="text-rose-600">Menu.</span></h2>
                         </div>
                         <div className="flex-1 h-px bg-gray-100" />
                     </div>

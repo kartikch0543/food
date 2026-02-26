@@ -176,13 +176,13 @@ export function AdminRestaurants() {
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
                                         <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-2 mb-3 block">Category</label>
-                                        <input type="text" value={category} onChange={e => setCategory(e.target.value)} placeholder="Fusion" className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-12 focus:ring-rose-500/5 transition-all outline-none font-black text-[11px] uppercase tracking-[0.2em]" />
+                                        <input type="text" value={category} onChange={e => setCategory(e.target.value)} placeholder="Fusion" className="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-12 focus:ring-rose-500/5 transition-all outline-none font-black text-sm uppercase tracking-widest" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest ml-2 mb-3 block">Price Context</label>
                                         <div className="relative">
                                             <IndianRupee className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-rose-600" />
-                                            <input type="text" value={price} onChange={e => setPrice(e.target.value)} placeholder="500 for 2" className="w-full pl-12 pr-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-12 focus:ring-rose-500/5 transition-all outline-none font-bold text-xs" />
+                                            <input type="text" value={price} onChange={e => setPrice(e.target.value)} placeholder="500 for 2" className="w-full pl-12 pr-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl focus:bg-white focus:ring-12 focus:ring-rose-500/5 transition-all outline-none font-bold text-sm" />
                                         </div>
                                     </div>
                                 </div>
@@ -267,7 +267,7 @@ export function AdminRestaurants() {
                                     </div>
                                     <div className="p-10 flex flex-col flex-1">
                                         <div className="mb-6">
-                                            <h3 className="text-3xl font-black text-gray-900 group-hover:text-rose-600 transition-colors uppercase tracking-tighter italic whitespace-nowrap overflow-hidden text-ellipsis mb-3 leading-none">{r.name}</h3>
+                                            <h3 className="text-3xl font-black text-gray-900 group-hover:text-rose-600 transition-colors uppercase tracking-tighter italic leading-tight whitespace-normal break-words mb-3">{r.name}</h3>
                                             <div className="flex items-center gap-3 text-gray-400 text-[10px] font-black uppercase tracking-widest italic bg-gray-50 px-4 py-2 rounded-xl w-fit">
                                                 <MapPin className="h-4 w-4 text-rose-500" /> {r.address}
                                             </div>
@@ -306,7 +306,7 @@ export function AdminRestaurants() {
                                                     </div>
                                                 </td>
                                                 <td className="px-10 py-8">
-                                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest italic leading-relaxed block max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">{r.address}</span>
+                                                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest italic leading-relaxed block max-w-[240px] bg-gray-50 px-4 py-3 rounded-xl border border-gray-100">{r.address}</span>
                                                 </td>
                                                 <td className="px-10 py-8 text-right">
                                                     <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500">

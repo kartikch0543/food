@@ -17,7 +17,15 @@ export function Checkout() {
         e.preventDefault();
         setLoading(true);
         try {
+            const restaurantId = cart?.items?.[0]?.foodId?.restaurantId;
+
+            if (!restaurantId) {
+                alert('No restaurant found for these items');
+                return;
+            }
+
             const orderData = {
+                restaurantId,
                 items: cart.items.map(item => ({
                     foodId: item.foodId?._id || item.foodId,
                     name: item.foodId?.name,
@@ -26,14 +34,14 @@ export function Checkout() {
                 })),
                 totalAmount: total + 45,
                 deliveryAddress: address,
-                paymentMethod
+                paymentMethod: paymentMethod === 'stripe' ? 'Online' : 'COD'
             };
             await api.orders.create(orderData);
-            clearCart();
+            await clearCart();
             navigate('/orders');
         } catch (err) {
             console.error(err);
-            alert('Failed to place order');
+            alert(err.response?.data?.message || 'Failed to place order');
         } finally {
             setLoading(false);
         }
@@ -49,7 +57,7 @@ export function Checkout() {
                         <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] italic">Transaction Protocol</span>
                     </div>
                     <div className="flex flex-col md:flex-row justify-between items-end gap-12">
-                        <h1 className="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">
+                        <h1 className="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-tight">
                             Secure <span className="text-rose-600">Gateway.</span>
                         </h1>
 
@@ -80,7 +88,7 @@ export function Checkout() {
                                 <MapPin className="h-8 w-8" />
                             </div>
                             <div>
-                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-none mb-2">Logistics <span className="text-rose-600">Endpoint.</span></h3>
+                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-tight mb-2">Logistics <span className="text-rose-600">Endpoint.</span></h3>
                                 <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest italic opacity-60">Destination for fulfillment</p>
                             </div>
                         </div>
@@ -103,11 +111,11 @@ export function Checkout() {
                         </div>
 
                         <div className="flex items-center gap-6 mb-12 relative z-10">
-                            <div className="bg-[#131517] p-5 rounded-[1.8rem] text-white shadow-2xl border border-white/5">
+                            <div className="bg-rose-50 p-5 rounded-[1.8rem] text-rose-600 shadow-xl shadow-rose-100/50">
                                 <CreditCard className="h-8 w-8" />
                             </div>
                             <div>
-                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-none mb-2">Settlement <span className="text-rose-600">Protocol.</span></h3>
+                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-tight mb-2">Settlement <span className="text-rose-600">Protocol.</span></h3>
                                 <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest italic opacity-60">Preferred financial channel</p>
                             </div>
                         </div>
@@ -121,14 +129,14 @@ export function Checkout() {
                                     key={method.id}
                                     type="button"
                                     onClick={() => setPaymentMethod(method.id)}
-                                    className={`p-10 rounded-[3rem] border-2 text-left transition-all duration-700 relative overflow-hidden group/btn ${paymentMethod === method.id ? 'bg-[#131517] border-[#131517] text-white shadow-2xl scale-[1.03]' : 'bg-gray-50 border-gray-50 text-gray-400 hover:border-gray-200'}`}
+                                    className={`p-10 rounded-[3rem] border-2 text-left transition-all duration-700 relative overflow-hidden group/btn ${paymentMethod === method.id ? 'bg-rose-600 border-rose-600 text-white shadow-2xl scale-[1.03] shadow-rose-200' : 'bg-gray-50 border-gray-50 text-gray-400 hover:border-gray-200'}`}
                                 >
                                     <div className="flex items-center justify-between mb-8">
-                                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] italic ${paymentMethod === method.id ? 'text-rose-500' : 'text-gray-300'}`}>Channel 0{method.id === 'stripe' ? '1' : '2'}</span>
-                                        {paymentMethod === method.id ? <CheckCircle className="h-6 w-6 text-rose-500 animate-in zoom-in duration-500" /> : <method.icon className="h-5 w-5 opacity-20" />}
+                                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] italic ${paymentMethod === method.id ? 'text-rose-200' : 'text-gray-300'}`}>Channel 0{method.id === 'stripe' ? '1' : '2'}</span>
+                                        {paymentMethod === method.id ? <CheckCircle className="h-6 w-6 text-white animate-in zoom-in duration-500" /> : <method.icon className="h-5 w-5 opacity-20" />}
                                     </div>
-                                    <p className="text-2xl font-black uppercase italic tracking-tighter mb-3 leading-none">{method.name}</p>
-                                    <p className="text-[11px] font-black uppercase tracking-[0.2em] opacity-40 italic">{method.detail}</p>
+                                    <p className="text-2xl font-black uppercase italic tracking-tighter mb-3 leading-tight">{method.name}</p>
+                                    <p className="text-[11px] font-black uppercase tracking-widest opacity-40 italic">{method.detail}</p>
                                 </button>
                             ))}
                         </div>
@@ -143,7 +151,7 @@ export function Checkout() {
                                 <div className="bg-rose-600 p-4.5 rounded-[1.5rem] rotate-3 shadow-xl group-hover/sidebar:rotate-6 transition-transform">
                                     <Package className="h-7 w-7 text-white" />
                                 </div>
-                                <h2 className="text-3xl font-black uppercase italic tracking-tighter leading-none">Order <span className="text-rose-600">Summary.</span></h2>
+                                <h2 className="text-3xl font-black uppercase italic tracking-tighter leading-tight">Order <span className="text-rose-600">Summary.</span></h2>
                             </div>
                             <span className="text-[11px] font-black text-gray-300 uppercase italic tracking-widest">Ref: CX_{Math.floor(Math.random() * 9000).toString().padStart(4, '0')}</span>
                         </div>
@@ -160,24 +168,24 @@ export function Checkout() {
                             ))}
                         </div>
 
-                        <div className="space-y-6 p-10 bg-[#131517] rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden border border-white/5">
+                        <div className="space-y-6 p-10 bg-white rounded-[3.5rem] text-gray-900 shadow-2xl relative overflow-hidden border border-rose-50">
                             <div className="absolute top-0 right-0 p-10 opacity-5 text-rose-500">
                                 <Sparkles className="h-32 w-32" />
                             </div>
 
-                            <div className="flex justify-between items-center text-gray-500 relative z-10">
+                            <div className="flex justify-between items-center text-gray-400 relative z-10">
                                 <span className="text-[11px] font-black uppercase tracking-[0.3em] italic">Base Inventory</span>
                                 <span className="font-bold text-lg italic">₹{total.toFixed(2)}</span>
                             </div>
-                            <div className="flex justify-between items-center text-gray-500 relative z-10">
+                            <div className="flex justify-between items-center text-gray-400 relative z-10">
                                 <span className="text-[11px] font-black uppercase tracking-[0.3em] italic">Logistics Fee</span>
                                 <span className="font-bold text-lg italic">₹45.00</span>
                             </div>
-                            <div className="h-px bg-white/10 relative z-10" />
+                            <div className="h-px bg-gray-100 relative z-10" />
                             <div className="flex justify-between items-end relative z-10">
                                 <div>
                                     <p className="text-[11px] font-black uppercase tracking-[0.4em] text-rose-500 mb-2 italic">Total Settlement</p>
-                                    <div className="flex items-center gap-2 font-black text-6xl italic tracking-tighter text-white">
+                                    <div className="flex items-center gap-2 font-black text-6xl italic tracking-tighter text-gray-900">
                                         <IndianRupee className="h-8 w-8 text-rose-600 ml-[-8px]" />
                                         {(total + 45).toFixed(2)}
                                     </div>
@@ -187,7 +195,7 @@ export function Checkout() {
                             <button
                                 type="submit"
                                 disabled={loading || !address}
-                                className={`w-full py-8 mt-4 rounded-3xl font-black text-sm uppercase tracking-[0.4em] flex items-center justify-center gap-6 group transition-all transform active:scale-95 italic relative z-10 ${loading || !address ? 'bg-white/5 text-white/20 cursor-not-allowed border border-white/5' : 'bg-rose-600 text-white hover:bg-rose-700 shadow-[0_25px_50px_rgba(225,29,72,0.3)]'}`}
+                                className={`w-full py-8 mt-4 rounded-3xl font-black text-sm uppercase tracking-[0.4em] flex items-center justify-center gap-6 group transition-all transform active:scale-95 italic relative z-10 ${loading || !address ? 'bg-gray-50 text-gray-300 cursor-not-allowed border border-gray-100' : 'bg-rose-600 text-white hover:bg-rose-700 shadow-[0_25px_50px_rgba(225,29,72,0.3)]'}`}
                             >
                                 {loading ? 'Fulfilling...' : <>Place Commitment <ArrowRight className="h-7 w-7 group-hover:translate-x-4 transition-transform duration-700" /></>}
                             </button>
