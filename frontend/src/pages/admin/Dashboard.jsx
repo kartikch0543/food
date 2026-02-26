@@ -45,7 +45,7 @@ export function AdminDashboard() {
                             <Sparkles className="h-5 w-5 text-rose-500" />
                             <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.5em] italic">Command Center Protocol</span>
                         </div>
-                        <h1 className="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">
+                        <h1 className="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-tight">
                             System <span className="text-rose-600">Performance.</span>
                         </h1>
                     </div>
@@ -131,7 +131,7 @@ export function AdminDashboard() {
                             </div>
                             <ArrowRight className="h-7 w-7 text-gray-200 group-hover:text-rose-600 group-hover:translate-x-3 transition-all duration-500" />
                         </div>
-                        <h4 className="text-3xl font-black text-gray-900 uppercase tracking-tighter italic mb-4 leading-none">Logistics <span className="text-rose-600">Sync.</span></h4>
+                        <h4 className="text-3xl font-black text-gray-900 uppercase tracking-tighter italic mb-4 leading-tight">Logistics <span className="text-rose-600">Sync.</span></h4>
                         <p className="text-gray-400 font-bold text-sm leading-relaxed italic opacity-70">Monitor fulfillment cycles. Master order synchronization across the globalized delivery network.</p>
                     </Link>
 

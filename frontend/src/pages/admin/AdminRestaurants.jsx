@@ -129,7 +129,7 @@ export function AdminRestaurants() {
                                 {isOwner ? 'Brand Management' : 'Global Operations'}
                             </span>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">
+                        <h1 className="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter italic leading-tight">
                             {isOwner ? 'Establishment' : 'All Brands'}
                         </h1>
                     </div>
@@ -224,17 +224,17 @@ export function AdminRestaurants() {
                             </form>
                         </div>
                     ) : (
-                        <div className="bg-gray-900 p-12 rounded-[3.5rem] shadow-2xl text-white overflow-hidden relative group">
-                            <div className="absolute top-0 right-0 p-12 text-rose-600/10 group-hover:rotate-12 transition-transform duration-1000">
+                        <div className="bg-white p-12 rounded-[3.5rem] shadow-2xl border-t-8 border-rose-600 overflow-hidden relative group">
+                            <div className="absolute top-0 right-0 p-12 text-rose-600/5 group-hover:rotate-12 transition-transform duration-1000">
                                 <ShieldCheck className="h-48 w-48 -mr-12 -mt-12" />
                             </div>
                             <div className="relative z-10">
                                 <span className="text-rose-500 font-black text-[10px] uppercase tracking-[0.4em] italic mb-6 block">Identity Protection Active</span>
-                                <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-6 leading-none">Security <span className="text-rose-600">Lock.</span></h2>
+                                <h2 className="text-3xl font-black uppercase italic tracking-tighter mb-6 leading-tight text-gray-900">Security <span className="text-rose-600">Lock.</span></h2>
                                 <p className="text-gray-400 font-bold text-[11px] uppercase tracking-widest leading-relaxed mb-12 italic">Your primary establishment is live. Select 'Refine' from the catalog to modify global assets.</p>
-                                <div className="p-8 bg-white/5 rounded-[2rem] border border-white/10 italic">
+                                <div className="p-8 bg-rose-50 rounded-[2rem] border border-rose-100 italic">
                                     <p className="text-rose-400 text-[9px] font-black uppercase tracking-[0.4em] mb-4">Strategic Insight</p>
-                                    <p className="text-sm font-medium leading-relaxed opacity-90 tracking-tight">"Brands with high-resolution exhibition imagery see 3x more commitment. Ensure your visual catalog remains sharp."</p>
+                                    <p className="text-sm font-medium leading-relaxed text-rose-900/80 tracking-tight">"Brands with high-resolution exhibition imagery see 3x more commitment. Ensure your visual catalog remains sharp."</p>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +273,7 @@ export function AdminRestaurants() {
                                             </div>
                                         </div>
                                         <p className="text-gray-400 text-sm font-medium italic line-clamp-2 mb-10 leading-relaxed opacity-80">"{r.description}"</p>
-                                        <Link to={`/admin/restaurants/${r._id}/foods`} className="mt-auto w-full flex items-center justify-center gap-4 py-6 bg-gray-900 text-white rounded-[1.8rem] font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-600 transition-all shadow-xl shadow-rose-900/10 group/btn">
+                                        <Link to={`/admin/restaurants/${r._id}/foods`} className="mt-auto w-full flex items-center justify-center gap-4 py-6 bg-rose-600 text-white rounded-[1.8rem] font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-700 transition-all shadow-xl shadow-rose-900/10 group/btn italic">
                                             Manage Assets <Eye className="h-5 w-5 group-hover/btn:scale-125 transition-transform" />
                                         </Link>
                                     </div>
@@ -310,7 +310,7 @@ export function AdminRestaurants() {
                                                 </td>
                                                 <td className="px-10 py-8 text-right">
                                                     <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                                                        <Link to={`/admin/restaurants/${r._id}/foods`} className="p-4 text-white bg-gray-900 rounded-2xl hover:bg-rose-600 transition-all shadow-xl"><Eye className="h-5 w-5" /></Link>
+                                                        <Link to={`/admin/restaurants/${r._id}/foods`} className="p-4 text-white bg-rose-600 rounded-2xl hover:bg-rose-700 transition-all shadow-xl"><Eye className="h-5 w-5" /></Link>
                                                         <button onClick={() => handleEdit(r)} className="p-4 text-indigo-600 bg-indigo-50 rounded-2xl hover:bg-indigo-600 hover:text-white transition-all shadow-lg"><Edit className="h-5 w-5" /></button>
                                                         <button onClick={() => handleDelete(r._id)} className="p-4 text-red-600 bg-red-50 rounded-2xl hover:bg-red-600 hover:text-white transition-all shadow-lg"><Trash2 className="h-5 w-5" /></button>
                                                     </div>

@@ -172,7 +172,7 @@ export function AdminOrders() {
                                         <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-2 italic leading-none">Net Impact</p>
                                         <div className="flex items-center gap-2 text-gray-900 relative z-10">
                                             <IndianRupee className="h-5 w-5 text-rose-600" />
-                                            <span className="text-3xl font-black tracking-tighter italic leading-none">{order.totalAmount.toFixed(2)}</span>
+                                            <span className="text-3xl font-black tracking-tighter italic leading-tight">{order.totalAmount.toFixed(2)}</span>
                                         </div>
                                     </div>
                                     <div className="p-6 bg-gray-50/70 rounded-[2rem] border border-gray-100/50 hover:bg-white hover:shadow-xl transition-all duration-700 group/card relative overflow-hidden">
