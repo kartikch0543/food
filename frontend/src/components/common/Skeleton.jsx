@@ -6,15 +6,16 @@ export function Skeleton({ className }) {
 
 export function RestaurantSkeleton() {
     return (
-        <div className="bg-white rounded-[2.5rem] border border-rose-50 overflow-hidden flex flex-col h-full">
-            <Skeleton className="h-52 w-full rounded-none" />
-            <div className="p-8 space-y-4">
-                <Skeleton className="h-4 w-16" />
-                <Skeleton className="h-8 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <div className="pt-4 border-t border-rose-50 flex justify-between">
-                    <Skeleton className="h-4 w-20" />
-                    <Skeleton className="h-4 w-12" />
+        <div className="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden flex flex-col h-full shadow-sm">
+            <Skeleton className="h-64 w-full rounded-none" />
+            <div className="p-9 space-y-5">
+                <Skeleton className="h-5 w-20 rounded-lg" />
+                <Skeleton className="h-10 w-3/4 rounded-xl" />
+                <Skeleton className="h-4 w-full rounded-lg" />
+                <Skeleton className="h-4 w-5/6 rounded-lg" />
+                <div className="pt-6 border-t border-gray-50 flex justify-between items-center">
+                    <Skeleton className="h-5 w-24 rounded-lg" />
+                    <Skeleton className="h-5 w-16 rounded-lg" />
                 </div>
             </div>
         </div>
@@ -23,13 +24,13 @@ export function RestaurantSkeleton() {
 
 export function FoodSkeleton() {
     return (
-        <div className="bg-white rounded-[2.5rem] border border-rose-50 overflow-hidden flex flex-col h-full">
-            <Skeleton className="h-48 w-full rounded-none" />
-            <div className="p-7 space-y-4">
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-10 w-full rounded-2xl" />
+        <div className="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden flex flex-col h-full shadow-sm">
+            <Skeleton className="h-56 w-full rounded-none" />
+            <div className="p-9 space-y-5">
+                <Skeleton className="h-4 w-14 rounded-lg" />
+                <Skeleton className="h-8 w-3/4 rounded-xl" />
+                <Skeleton className="h-4 w-full rounded-lg" />
+                <Skeleton className="h-12 w-full rounded-2xl" />
             </div>
         </div>
     );

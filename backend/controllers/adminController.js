@@ -26,7 +26,7 @@ exports.getAdminStats = async (req, res) => {
         const totalOrders = await Order.countDocuments(query);
         const totalUsers = req.user.role === 'admin' ? await User.countDocuments({ role: 'user' }) : 0;
 
-        const orders = await Order.find(query);
+        const orders = await Order.find({ ...query, status: { $ne: 'Cancelled' } });
         const totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
 
         res.json({

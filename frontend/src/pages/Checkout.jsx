@@ -1,228 +1,200 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../lib/api';
 import { useCart } from '../context/CartContext';
-import { MapPin, CreditCard, ShoppingBag, ArrowRight, ShieldCheck, Truck, IndianRupee, ChevronLeft } from 'lucide-react';
+import { api } from '../lib/api';
+import { MapPin, CreditCard, ChevronRight, CheckCircle, ArrowRight, IndianRupee, Sparkles, Package, ShieldCheck } from 'lucide-react';
 
 export function Checkout() {
-    const { cart, clearCart, loading: cartLoading } = useCart();
+    const { cart, clearCart } = useCart();
+    const [address, setAddress] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('stripe');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const [address, setAddress] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('COD');
-    const [processing, setProcessing] = useState(false);
-
-    useEffect(() => {
-        if (!cartLoading && (!cart || cart.items.length === 0)) {
-            navigate('/cart');
-        }
-    }, [cart, cartLoading, navigate]);
-
-    if (cartLoading) return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-            <div className="flex flex-col items-center gap-6">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-rose-600 border-solid"></div>
-                <p className="text-gray-400 font-bold text-[10px] uppercase tracking-widest italic">Securing Logistics...</p>
-            </div>
-        </div>
-    );
-
-    if (!cart || cart.items.length === 0) return null;
-
-    const totalAmount = cart.items.reduce((sum, item) => {
-        const food = item.foodId;
-        if (typeof food === 'object' && food !== null) {
-            return sum + (food.price * item.quantity);
-        }
-        return sum;
-    }, 0);
-
-    const orderItems = cart.items.map(item => {
-        const food = item.foodId;
-        if (typeof food === 'object' && food !== null) {
-            return {
-                foodId: food._id,
-                name: food.name,
-                price: food.price,
-                quantity: item.quantity
-            };
-        }
-        return null;
-    }).filter(Boolean);
+    const total = cart?.items.reduce((sum, item) => sum + (item.foodId?.price || 0) * item.quantity, 0) || 0;
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
-        if (orderItems.length === 0) return;
-        setProcessing(true);
-
+        setLoading(true);
         try {
-            const firstItem = cart.items[0].foodId;
-            const restaurantId = typeof firstItem === 'object' ? firstItem.restaurantId : null;
-
-            await api.orders.create({
-                items: orderItems,
-                totalAmount,
+            const orderData = {
+                items: cart.items.map(item => ({
+                    foodId: item.foodId?._id || item.foodId,
+                    name: item.foodId?.name,
+                    price: item.foodId?.price,
+                    quantity: item.quantity
+                })),
+                totalAmount: total + 45,
                 deliveryAddress: address,
-                paymentMethod,
-                restaurantId
-            });
-            await clearCart();
+                paymentMethod
+            };
+            await api.orders.create(orderData);
+            clearCart();
             navigate('/orders');
-        } catch (error) {
-            console.error(error);
-            alert(error.response?.data?.message || 'Failed to place order');
+        } catch (err) {
+            console.error(err);
+            alert('Failed to place order');
         } finally {
-            setProcessing(false);
+            setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-[#fafafa] pb-24">
-            {/* Header Sticky Container - Compact */}
-            <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-[73px] z-[40]">
-                <div className="max-w-7xl mx-auto px-6 py-4">
-                    <div className="flex flex-col md:flex-row justify-between items-end gap-8">
-                        <div>
-                            <div className="flex items-center gap-3 mb-1">
-                                <button onClick={() => navigate('/cart')} className="p-2.5 bg-gray-50 rounded-xl hover:bg-rose-50 hover:text-rose-600 transition-all shadow-sm">
-                                    <ChevronLeft className="h-4 w-4" />
+        <div className="min-h-screen bg-[#fafafa] pb-32">
+            {/* Header Section - Mid-Plus Balanced */}
+            <div className="bg-white border-b border-gray-100 pt-20 pb-16 px-10 mb-16 shadow-sm">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex items-center gap-4 mb-4">
+                        <Sparkles className="h-5 w-5 text-rose-500" />
+                        <span className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] italic">Transaction Protocol</span>
+                    </div>
+                    <div className="flex flex-col md:flex-row justify-between items-end gap-12">
+                        <h1 className="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">
+                            Secure <span className="text-rose-600">Gateway.</span>
+                        </h1>
+
+                        <div className="flex items-center gap-8 bg-gray-50 p-3.5 rounded-[2rem] border border-gray-100 shadow-inner">
+                            {[1, 2, 3].map((step) => (
+                                <div key={step} className="flex items-center gap-4">
+                                    <div className={`h-12 w-12 rounded-[1.2rem] flex items-center justify-center font-black italic text-sm shadow-md transition-all ${step === 2 ? 'bg-rose-600 text-white' : step < 2 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-white text-gray-200'}`}>
+                                        {step < 2 ? <CheckCircle className="h-6 w-6" /> : `0${step}`}
+                                    </div>
+                                    {step < 3 && <ChevronRight className="h-5 w-5 text-gray-200" />}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form onSubmit={handlePlaceOrder} className="max-w-7xl mx-auto px-10 grid grid-cols-1 lg:grid-cols-12 gap-20">
+                <div className="lg:col-span-7 space-y-16">
+                    {/* Logistics Section - Substantial */}
+                    <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-black/[0.02] transition-all duration-700">
+                        <div className="absolute top-0 right-0 p-12 text-rose-50/40 opacity-20 group-hover:rotate-12 transition-transform duration-[2s]">
+                            <MapPin className="h-44 w-44" />
+                        </div>
+
+                        <div className="flex items-center gap-6 mb-12 relative z-10">
+                            <div className="bg-rose-50 p-5 rounded-[1.8rem] text-rose-600 shadow-xl shadow-rose-100/50">
+                                <MapPin className="h-8 w-8" />
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-none mb-2">Logistics <span className="text-rose-600">Endpoint.</span></h3>
+                                <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest italic opacity-60">Destination for fulfillment</p>
+                            </div>
+                        </div>
+
+                        <div className="relative z-10">
+                            <textarea
+                                required
+                                placeholder="ENTER PRECISE DELIVERY COORDINATES..."
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                className="w-full bg-gray-50 border-2 border-transparent focus:border-rose-600 focus:bg-white rounded-[2.5rem] p-10 text-base font-black text-gray-900 outline-none transition-all min-h-[220px] uppercase tracking-wider italic shadow-inner placeholder:text-gray-200"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Settlement Section - Interactive */}
+                    <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-black/[0.02] transition-all duration-700">
+                        <div className="absolute top-0 right-0 p-12 text-gray-50/50 opacity-20 group-hover:rotate-12 transition-transform duration-[2s]">
+                            <CreditCard className="h-44 w-44" />
+                        </div>
+
+                        <div className="flex items-center gap-6 mb-12 relative z-10">
+                            <div className="bg-[#131517] p-5 rounded-[1.8rem] text-white shadow-2xl border border-white/5">
+                                <CreditCard className="h-8 w-8" />
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-black text-gray-900 uppercase italic tracking-tighter leading-none mb-2">Settlement <span className="text-rose-600">Protocol.</span></h3>
+                                <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest italic opacity-60">Preferred financial channel</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                            {[
+                                { id: 'stripe', name: 'Digital Ledger', detail: 'SECURE ENCRYPTED TRANSFER', icon: ShieldCheck },
+                                { id: 'cod', name: 'Physical Settlement', detail: 'PAYMENT UPON FULFILLMENT', icon: IndianRupee }
+                            ].map((method) => (
+                                <button
+                                    key={method.id}
+                                    type="button"
+                                    onClick={() => setPaymentMethod(method.id)}
+                                    className={`p-10 rounded-[3rem] border-2 text-left transition-all duration-700 relative overflow-hidden group/btn ${paymentMethod === method.id ? 'bg-[#131517] border-[#131517] text-white shadow-2xl scale-[1.03]' : 'bg-gray-50 border-gray-50 text-gray-400 hover:border-gray-200'}`}
+                                >
+                                    <div className="flex items-center justify-between mb-8">
+                                        <span className={`text-[10px] font-black uppercase tracking-[0.3em] italic ${paymentMethod === method.id ? 'text-rose-500' : 'text-gray-300'}`}>Channel 0{method.id === 'stripe' ? '1' : '2'}</span>
+                                        {paymentMethod === method.id ? <CheckCircle className="h-6 w-6 text-rose-500 animate-in zoom-in duration-500" /> : <method.icon className="h-5 w-5 opacity-20" />}
+                                    </div>
+                                    <p className="text-2xl font-black uppercase italic tracking-tighter mb-3 leading-none">{method.name}</p>
+                                    <p className="text-[11px] font-black uppercase tracking-[0.2em] opacity-40 italic">{method.detail}</p>
                                 </button>
-                                <span className="text-[8px] font-black text-rose-600 uppercase tracking-[0.3em] italic">Transmission Phase</span>
-                            </div>
-                            <h1 className="text-3xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">Checkout <span className="text-rose-600">Protocol.</span></h1>
-                        </div>
-                        <div className="hidden lg:flex items-center gap-4 px-8 py-3 bg-gray-50 rounded-2xl border border-gray-100 italic">
-                            <span className="text-[9px] font-black text-gray-400 uppercase">1. Basket</span>
-                            <ArrowRight className="h-3 w-3 text-gray-200" />
-                            <span className="text-[9px] font-black text-rose-600 uppercase tracking-widest">2. Verification</span>
-                            <ArrowRight className="h-3 w-3 text-gray-200" />
-                            <span className="text-[9px] font-black text-gray-300 uppercase">3. Arrival</span>
+                            ))}
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="max-w-7xl mx-auto px-6 mt-12">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                    <div className="lg:col-span-8">
-                        <form id="checkout-form" onSubmit={handlePlaceOrder} className="space-y-10">
-                            {/* Delivery Section */}
-                            <section className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <div className="flex items-center justify-center w-10 h-10 bg-gray-900 text-white rounded-xl">
-                                        <MapPin className="h-5 w-5" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-xl font-black text-gray-900 uppercase tracking-tighter italic">Coordinates</h2>
-                                        <p className="text-[8px] font-black text-rose-600 uppercase tracking-widest mt-0.5 italic">Define the final destination</p>
-                                    </div>
+                {/* Sidebar Manifest - Premium */}
+                <div className="lg:col-span-5">
+                    <div className="bg-white p-12 rounded-[4rem] border border-gray-100 shadow-2xl sticky top-[120px] hover:shadow-black/[0.05] transition-all duration-1000 group/sidebar">
+                        <div className="flex items-center justify-between mb-12">
+                            <div className="flex items-center gap-5">
+                                <div className="bg-rose-600 p-4.5 rounded-[1.5rem] rotate-3 shadow-xl group-hover/sidebar:rotate-6 transition-transform">
+                                    <Package className="h-7 w-7 text-white" />
                                 </div>
-                                <div className="relative">
-                                    <textarea
-                                        required
-                                        className="w-full px-8 py-6 bg-gray-50 border border-transparent rounded-2xl focus:bg-white focus:border-rose-600 transition-all h-32 resize-none font-bold text-base placeholder:text-gray-200 outline-none italic"
-                                        value={address}
-                                        onChange={(e) => setAddress(e.target.value)}
-                                        placeholder="Detailed address (Street, Building, Flat...)"
-                                    ></textarea>
+                                <h2 className="text-3xl font-black uppercase italic tracking-tighter leading-none">Order <span className="text-rose-600">Summary.</span></h2>
+                            </div>
+                            <span className="text-[11px] font-black text-gray-300 uppercase italic tracking-widest">Ref: CX_{Math.floor(Math.random() * 9000).toString().padStart(4, '0')}</span>
+                        </div>
+
+                        <div className="space-y-5 max-h-[380px] overflow-y-auto no-scrollbar mb-12 pr-2">
+                            {cart.items.map((item, idx) => (
+                                <div key={idx} className="flex justify-between items-center p-6 bg-gray-50 rounded-[2rem] border border-transparent hover:border-gray-100 hover:bg-white transition-all group/item shadow-sm">
+                                    <div className="flex items-center gap-6">
+                                        <span className="text-sm font-black text-rose-600 bg-white w-12 h-12 rounded-[1.2rem] flex items-center justify-center shadow-md border border-gray-50 italic">{item.quantity}x</span>
+                                        <span className="text-base font-black text-gray-900 uppercase tracking-tight italic group-hover/item:text-rose-600 transition-colors">{item.foodId?.name}</span>
+                                    </div>
+                                    <span className="text-lg font-black text-gray-900 italic">₹{(item.foodId?.price * item.quantity).toFixed(2)}</span>
                                 </div>
-                            </section>
+                            ))}
+                        </div>
 
-                            {/* Payment Section */}
-                            <section className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <div className="flex items-center justify-center w-10 h-10 bg-gray-900 text-white rounded-xl">
-                                        <CreditCard className="h-5 w-5" />
-                                    </div>
-                                    <div>
-                                        <h2 className="text-xl font-black text-gray-900 uppercase tracking-tighter italic">Settlement</h2>
-                                        <p className="text-[8px] font-black text-rose-600 uppercase tracking-widest mt-0.5 italic">Select transaction gateway</p>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <label className={`relative flex items-center p-8 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'COD' ? 'border-rose-600 bg-white shadow-lg' : 'border-gray-50 bg-gray-50/50 hover:border-rose-100'}`}>
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            value="COD"
-                                            checked={paymentMethod === 'COD'}
-                                            onChange={(e) => setPaymentMethod(e.target.value)}
-                                            className="sr-only"
-                                        />
-                                        <div className="flex flex-col">
-                                            <span className={`text-xl font-black uppercase tracking-tighter italic ${paymentMethod === 'COD' ? 'text-gray-900' : 'text-gray-400'}`}>Cash</span>
-                                            <span className="text-[9px] font-black text-rose-500 uppercase tracking-widest mt-1 italic">Hand Settlement</span>
-                                        </div>
-                                    </label>
+                        <div className="space-y-6 p-10 bg-[#131517] rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden border border-white/5">
+                            <div className="absolute top-0 right-0 p-10 opacity-5 text-rose-500">
+                                <Sparkles className="h-32 w-32" />
+                            </div>
 
-                                    <div className="relative flex items-center p-8 border-2 border-dashed border-gray-100 rounded-2xl opacity-40 bg-gray-50/30">
-                                        <div className="flex flex-col">
-                                            <span className="text-xl font-black uppercase tracking-tighter italic text-gray-300">Digital</span>
-                                            <span className="text-[9px] font-black text-gray-300 uppercase mt-1 italic">Locked</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                        </form>
-                    </div>
-
-                    {/* Order Summary Sidebar - Compact */}
-                    <div className="lg:col-span-4 lg:sticky lg:top-[200px]">
-                        <div className="bg-gray-900 p-10 rounded-[2.5rem] shadow-2xl text-white relative overflow-hidden group/sidebar">
-                            <div className="relative z-10">
-                                <h2 className="text-xl font-black mb-8 flex items-center gap-3 uppercase tracking-tighter italic text-rose-500">
-                                    <ShoppingBag className="h-5 w-5" /> Final Manifest
-                                </h2>
-
-                                <div className="space-y-6 mb-12">
-                                    <div className="max-h-48 overflow-y-auto no-scrollbar space-y-4 pr-2">
-                                        {cart.items.map((item, idx) => {
-                                            const food = item.foodId;
-                                            if (typeof food !== 'object') return null;
-                                            return (
-                                                <div key={idx} className="flex justify-between items-center py-0.5">
-                                                    <div className="flex flex-col">
-                                                        <span className="text-[10px] font-black uppercase tracking-tight text-white/90 italic">{food.name}</span>
-                                                        <span className="text-[8px] font-black text-white/20 uppercase tracking-widest mt-0.5 italic">Qty x{item.quantity}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-1 font-black text-rose-400 italic">
-                                                        <IndianRupee className="h-2.5 w-2.5" />
-                                                        <span className="text-lg tracking-tighter">{(food.price * item.quantity).toFixed(2)}</span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                    <div className="h-px bg-white/10 my-8" />
-                                    <div className="flex justify-between items-end">
-                                        <div>
-                                            <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/30 mb-2 italic">Grand Aggregate</p>
-                                            <div className="flex items-center gap-2 font-black text-white italic">
-                                                <IndianRupee className="h-6 w-6 text-rose-500" />
-                                                <p className="text-5xl tracking-tighter leading-[0.8]">{totalAmount.toFixed(2)}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <button
-                                        type="submit"
-                                        form="checkout-form"
-                                        disabled={processing || !address}
-                                        className="w-full relative group/btn py-6 bg-rose-600 text-white rounded-2xl font-black text-[9px] uppercase tracking-[0.3em] active:scale-95 transition-all shadow-xl disabled:opacity-30 disabled:cursor-not-allowed italic"
-                                    >
-                                        {processing ? 'Processing...' : 'Authorize Arrival'}
-                                    </button>
-                                    <div className="flex items-center justify-center gap-2 text-white/10 text-[8px] font-black uppercase tracking-widest italic">
-                                        <ShieldCheck className="h-3 w-3" /> Secure Transmission
+                            <div className="flex justify-between items-center text-gray-500 relative z-10">
+                                <span className="text-[11px] font-black uppercase tracking-[0.3em] italic">Base Inventory</span>
+                                <span className="font-bold text-lg italic">₹{total.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-gray-500 relative z-10">
+                                <span className="text-[11px] font-black uppercase tracking-[0.3em] italic">Logistics Fee</span>
+                                <span className="font-bold text-lg italic">₹45.00</span>
+                            </div>
+                            <div className="h-px bg-white/10 relative z-10" />
+                            <div className="flex justify-between items-end relative z-10">
+                                <div>
+                                    <p className="text-[11px] font-black uppercase tracking-[0.4em] text-rose-500 mb-2 italic">Total Settlement</p>
+                                    <div className="flex items-center gap-2 font-black text-6xl italic tracking-tighter text-white">
+                                        <IndianRupee className="h-8 w-8 text-rose-600 ml-[-8px]" />
+                                        {(total + 45).toFixed(2)}
                                     </div>
                                 </div>
                             </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading || !address}
+                                className={`w-full py-8 mt-4 rounded-3xl font-black text-sm uppercase tracking-[0.4em] flex items-center justify-center gap-6 group transition-all transform active:scale-95 italic relative z-10 ${loading || !address ? 'bg-white/5 text-white/20 cursor-not-allowed border border-white/5' : 'bg-rose-600 text-white hover:bg-rose-700 shadow-[0_25px_50px_rgba(225,29,72,0.3)]'}`}
+                            >
+                                {loading ? 'Fulfilling...' : <>Place Commitment <ArrowRight className="h-7 w-7 group-hover:translate-x-4 transition-transform duration-700" /></>}
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }
