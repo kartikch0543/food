@@ -260,4 +260,12 @@ export function Home() {
                             })}
                         </div>
                     ) : (
-                        <div className="text-center p
+                        <div className="text-center p-20 bg-rose-50/10 rounded-[3rem] border-2 border-dashed border-rose-100">
+                            <h3 className="text-xl font-black text-gray-300 uppercase italic tracking-tighter">Inventory lookup empty</h3>
+                        </div>
+                    )}
+                </section>
+            </div>
+        </div>
+    );
+}
