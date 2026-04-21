@@ -1,10 +1,10 @@
-# Stage 1: Build the React Application
-FROM node:20-alpine AS build
+# Stage 1: Build the React application with the Node version the app expects
+FROM node:24-alpine AS build
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 

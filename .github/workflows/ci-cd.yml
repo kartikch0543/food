@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -45,15 +46,27 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Navigate to the project directory or create it if it doesn't exist
             mkdir -p ~/food
             cd ~/food
-            
-            # Fetch the latest docker-compose.yml (or pull from git if the repo is cloned)
-            # Assuming you have cloned the repo on EC2 or you upload docker-compose.yml
-            # If using generic images from Docker Hub, we can create a production docker-compose.yml here
-            
-            cat << 'EOF' > docker-compose.yml
+
+            if docker compose version >/dev/null 2>&1; then
+              COMPOSE_CMD="docker compose"
+            elif command -v docker-compose >/dev/null 2>&1; then
+              COMPOSE_CMD="docker-compose"
+            else
+              echo "Docker Compose is not installed on the server."
+              exit 1
+            fi
+
+            cat <<EOF > .env
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
+            CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
+            EOF
+
+            cat <<'EOF' > docker-compose.yml
             services:
               backend:
                 image: ${{ secrets.DOCKER_USERNAME }}/food-backend:latest
@@ -76,9 +89,6 @@ jobs:
                   - backend
                 restart: always
             EOF
-            
-            # Pull latest images
-            docker-compose pull
-            
-            # Restart containers
-            docker-compose up -d
+
+            $COMPOSE_CMD pull
+            $COMPOSE_CMD up -d --remove-orphans
